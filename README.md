@@ -1,2 +1,0 @@
-# firefly
-Firefly Operations
