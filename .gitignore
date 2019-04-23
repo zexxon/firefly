@@ -1,5 +1,5 @@
 /ibc/
-/frontend/frontend/css/  
+/frontend/frontend/css* 
 /frontend/frontend/js/
 /frontend/frontend/node_modules/
 /frontend/frontend/package.json  
