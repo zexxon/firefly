@@ -1,0 +1,11 @@
+[Unit]
+Description=Clean up dangling Docker containers
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker system prune -f
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target

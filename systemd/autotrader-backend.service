@@ -1,0 +1,13 @@
+[Unit]
+Description=Autotrader Server Application 
+After=autotrader-cache-redis.service
+
+[Service]
+Type=simple
+ExecStart=/opt/firefly/backend/backend-start.sh
+ExecStop=/opt/firefly/backend/backend-stop.sh
+TimeoutStartSec=0
+SuccessExitStatus=137
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=Autotrader Redis Cache Service
+After=autotrader-storage-mongo.service
+
+[Service]
+Type=simple
+ExecStart=/opt/firefly/redis/cache-start.sh
+ExecStop=/opt/firefly/redis/cache-stop.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target

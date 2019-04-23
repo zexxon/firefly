@@ -1,0 +1,11 @@
+[Unit]
+Description=Interactive Brokers Gateway Service
+After=docker.service
+
+[Service]
+Type=simple
+ExecStart=/opt/ibc/gatewaystart.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target

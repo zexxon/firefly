@@ -1,0 +1,12 @@
+[Unit]
+Description=Autotrader Web Frontend
+After=autotrader-backend.service
+
+[Service]
+Type=simple
+ExecStart=/opt/firefly/frontend/frontend-start.sh
+ExecStop=/opt/firefly/frontend/frontend-stop.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
