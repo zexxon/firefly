@@ -155,17 +155,30 @@ def parse_backtest_results(input_string):
 
 # user, password = get_creds()
 end_date = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%dT%H:%M')
-time_delta = datetime.timedelta(minutes=60)
+# Get last 2 hours to avoid missing bars
+time_delta = datetime.timedelta(minutes=120)
 start_date = datetime.datetime.now() - time_delta
 start_date = datetime.datetime.strftime(start_date, '%Y-%m-%dT%H:%M')
 
 
 # Add 1 sec bar data
+print("1 sec bar data pull. Date Range: " + str(start_date) + "->" + str(end_date))
 add_bar_data(bar_request_json('Bar', 'GBPUSD.IB', str(start_date), str(end_date), '1', 'false', 'false'), '/bar/add/','','')
 
+# Sleep 20 minutes between pulls. The correct way would be to validate the 1s bar data job is complete by enumerating last value updated in DB. 
+print("Sleeping for 1 minute, before pulling minute bar data.")
+time.sleep(60)
+
 # Add 1 min bar data
-#add_bar_data(bar_request_json('Bar', 'GBPUSD.IB', str(start_date), str(end_date), '60', '', 'false'), '/bar/add/','','')
+print("1 minute bar data pull. Date Range: " + str(start_date) + "->" + str(end_date))
+add_bar_data(bar_request_json('Bar', 'GBPUSD.IB', str(start_date), str(end_date), '60', '', 'false'), '/bar/add/','','')
+
+# Sleep 1 minute after minute bar pull
+print("Sleeping for 1 minute, before pulling hour bar data.")
+time.sleep(60)
 
 # Add 1 hour bar data
-#add_bar_data(bar_request_json('Bar', 'GBPUSD.IB', str(start_date), str(end_date), '3600', 'false','false'), '/bar/add/','','')
-
+print("1 hour bar data pull. Date Range: " + str(start_date) + "->" + str(end_date))
+add_bar_data(bar_request_json('Bar', 'GBPUSD.IB', str(start_date), str(end_date), '3600', 'false','false'), '/bar/add/','','')
+# Add sleep buffer between next script call
+time.sleep(60)
