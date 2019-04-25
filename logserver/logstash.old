@@ -1,0 +1,26 @@
+input {
+  file {
+    path => "/var/log/messages"
+    type => "syslog"
+  }
+
+  file {
+    path => "/var/log/apache/access.log"
+    type => "apache"
+  }
+  http{
+  	id => "autotrader_logs"
+	#codec => json
+  	port => 7000
+  }
+}
+
+filter{
+    json{
+        source => "message"
+    }
+}
+output {
+  elasticsearch { hosts => ["es01:9200"] }
+}
+
