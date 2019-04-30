@@ -10,7 +10,7 @@ from requests.auth import HTTPBasicAuth
 
 limit = 1000
 pageStart = 0
-ff_api_host = "192.168.1.150" #"10.8.0.1" #"192.168.1.150" #"10.8.0.1"
+ff_api_host = "192.168.1.150" #"10.8.0.1"
 ff_api_port = "9999"
 
 class Backtest:
@@ -109,11 +109,11 @@ def backtest_request_json(system_logic, contract, contract_name, start_time, end
 
 def add_bar_data(json_payload, uri, user, password):
 
-    # response = requests.post('http://' + ff_api_host + ':' + ff_api_port + '/api/bar/add/', json=json_payload, auth=
-    # (user, password), verify=False)
+    # Disconnect and reconnect broker, in case we have a client conection issue
+    connect_broker("IB", "disconnect")
+    time.sleep(2)
+    connect_broker("IB", "connect")
     response = requests.post('http://' + ff_api_host + ':' + ff_api_port + '/api' + uri, json=json_payload, verify=False)
-    #parse_value((response.content.decode('ascii')))
-
     return response.content
 
 def get_bar_data(json_payload, uri, user, password):
@@ -123,6 +123,19 @@ def get_bar_data(json_payload, uri, user, password):
     response = requests.post('http://' + ff_api_host + ':' + ff_api_port + '/api' + uri, json=json_payload, verify=False)
     #parse_value((response.content.decode('ascii')))
 
+    return response.content
+
+
+def connect_broker(broker_name, action):
+
+    if action == "connect":
+        response = requests.put('http://' + ff_api_host + ':' + ff_api_port + '/api/broker/connect', json=broker_name, verify=False)
+    elif action == "disconnect":
+        # Disconnect Broker
+        response = requests.put('http://' + ff_api_host + ':' + ff_api_port + '/api/broker/disconnect', json=broker_name, verify=False)
+    else:
+        print("Error, please specify connect or disconnect")
+        return
     return response.content
 
 
@@ -165,7 +178,7 @@ start_date = datetime.datetime.strftime(start_date, '%Y-%m-%dT%H:%M')
 print("1 sec bar data pull. Date Range: " + str(start_date) + "->" + str(end_date))
 add_bar_data(bar_request_json('Bar', 'GBPUSD.IB', str(start_date), str(end_date), '1', 'false', 'false'), '/bar/add/','','')
 
-# Sleep 20 minutes between pulls. The correct way would be to validate the 1s bar data job is complete by enumerating last value updated in DB. 
+# Sleep 20 minutes between pulls. The correct way would be to validate the 1s bar data job is complete by enumerating last value updated in DB.
 print("Sleeping for 1 minute, before pulling minute bar data.")
 time.sleep(60)
 
@@ -182,3 +195,17 @@ print("1 hour bar data pull. Date Range: " + str(start_date) + "->" + str(end_da
 add_bar_data(bar_request_json('Bar', 'GBPUSD.IB', str(start_date), str(end_date), '3600', 'false','false'), '/bar/add/','','')
 # Add sleep buffer between next script call
 time.sleep(60)
+
+# Run backtest
+
+#bar_size = "60"
+
+#step_mutation_profit_target = ["15","20","25","90"]
+
+#run_backtest(backtest_request_json("com.seeds.systemlogic.rangebreakout.RangeBreakOut", "GBPUSD.IB", "BT RBO GPUSD Test Script",
+#                      '2019-04-05T09:56','2019-04-17T10:05', "120", "10", bar_size, "5",
+#                      "60", "false", "900", "60", "0",
+#                      "300", "0", "3600", "15", "35",
+#                      "0", "0", "0", "0", "1",
+#                      "2", "5", "130", step_mutation_profit_target,"60","0"), '/system/run/','','')
+
