@@ -1,0 +1,12 @@
+[Unit]
+Description=Autotrader Server Application 
+
+[Service]
+Type=simple
+ExecStart=/bin/docker-compose -f /opt/firefly/backend/docker-compose.yml up
+ExecStop=/bin/docker-compose -f /opt/firefly/backend/docker-compose.yml down
+TimeoutStartSec=0
+SuccessExitStatus=137
+
+[Install]
+WantedBy=multi-user.target
