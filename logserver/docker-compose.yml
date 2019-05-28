@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.7'
 services:
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
@@ -67,7 +67,7 @@ volumes:
     driver: local
   esdata02:
     driver: local
-networks: 
-   default:
-        external:
-           name: backend_default 
+networks:
+  default:
+    external: 
+      name: backend_autotrader 

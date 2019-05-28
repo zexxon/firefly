@@ -1,5 +1,6 @@
 [Unit]
 Description=Autotrader Server Application 
+After=logserver.service
 
 [Service]
 Type=simple

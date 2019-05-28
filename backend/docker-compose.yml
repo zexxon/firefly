@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.7'
 services:
   backend-service:  
     image: backend-service:latest
@@ -10,14 +10,35 @@ services:
     volumes:
       - /bin/netstat:/bin/netstat
       - ./seeds/config/default_config.toml:/opt/seeds/config/default_config.toml 
+    networks:
+      autotrader:
+        ipv4_address: 172.20.0.250
     ports:
       - 9999:9999
     links:
       - cache-service
       - storage-service
+  frontend-service:
+    image: frontend-service:latest
+    container_name: frontend-service
+    command: node server.js --apihost=backend-service --apiport=9999 --webhost=`hostname` --webport=10000
+    networks: 
+      autotrader:
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 10000:10000
+    depends_on:
+      - backend-service
+    links:
+      - backend-service 
   storage-service:
     image: storage:latest
     container_name: storage-service
+    networks: 
+      autotrader:
     ulimits:
       memlock:
         soft: -1
@@ -30,6 +51,8 @@ services:
   cache-service:
     image: cache:latest
     container_name: cache-service
+    networks:
+      autotrader:
     ulimits:
       memlock:
         soft: -1
@@ -38,3 +61,11 @@ services:
       - /usr/bin:/usr/bin/
     ports:
       - 6379:6379
+
+networks:
+  autotrader:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
