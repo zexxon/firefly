@@ -3,6 +3,8 @@ services:
   backend-service:  
     image: backend-service:latest
     container_name: backend-service
+    tty: true
+    stdin_open: true
     ulimits:
       memlock:
         soft: -1

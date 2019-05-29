@@ -10,7 +10,7 @@ from requests.auth import HTTPBasicAuth
 
 limit = 1000
 pageStart = 0
-ff_api_host = "192.168.1.150" #"10.8.0.1"
+ff_api_host = "172.20.0.250" #"10.8.0.1"
 ff_api_port = "9999"
 
 class Backtest:
