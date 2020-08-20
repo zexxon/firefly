@@ -27,7 +27,7 @@
     "hapi-login": "1.2.2",
     "hapi-auth-cookie": "7.0.0",
     "validator": "9.2.0",
-    "bcrypt": "1.0.3",
+    "bcrypt": "5.0.0",
     "ws": "5.2.0",
     "plotly": "1.0.6"
   },
