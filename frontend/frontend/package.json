@@ -11,7 +11,7 @@
   "author": "MattMaloney",
   "contributors": [],
   "dependencies": {
-    "handlebars": "^4.0.6",
+    "handlebars": "^4.7.7",
     "hapi": "16.6.2",
     "lodash.filter": "^4.6.0",
     "lodash.take": "^4.1.1",
